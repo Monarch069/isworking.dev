@@ -1,0 +1,97 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ─────────────────────────────────────────────
+      # Checkout content repository
+      # ─────────────────────────────────────────────
+
+      - name: Checkout content
+        uses: actions/checkout@v4
+
+      # ─────────────────────────────────────────────
+      # Checkout builder
+      # ─────────────────────────────────────────────
+
+      - name: Checkout builder
+        uses: actions/checkout@v4
+        with:
+          repository: isworking/ssg
+          path: builder
+
+      # ─────────────────────────────────────────────
+      # Build builder
+      # ─────────────────────────────────────────────
+
+      - name: Build ssg
+        run: |
+          cmake -S builder -B builder/build -DCMAKE_BUILD_TYPE=Release
+          cmake --build builder/build --config Release
+
+      # ─────────────────────────────────────────────
+      # Generate dist/
+      # ─────────────────────────────────────────────
+
+      - name: Generate site
+        run: |
+          ./builder/build/ssg .
+
+      - name: Verify dist
+        run: |
+          test -d dist
+          test -n "$(find dist -type f -print -quit)"
+
+      # ─────────────────────────────────────────────
+      # Create release version
+      # ─────────────────────────────────────────────
+
+      - name: Generate version
+        id: version
+        run: |
+          VERSION="$(date -u '+%Y.%m.%d.%H%M%S')"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Site version: $VERSION"
+
+      # ─────────────────────────────────────────────
+      # Archive generated site
+      # ─────────────────────────────────────────────
+
+      - name: Archive dist
+        run: |
+          tar -czf "dist-${{ steps.version.outputs.version }}.tar.gz" dist
+
+      # ─────────────────────────────────────────────
+      # Create GitHub release
+      # ─────────────────────────────────────────────
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create \
+            "site-${{ steps.version.outputs.version }}" \
+            "dist-${{ steps.version.outputs.version }}.tar.gz" \
+            --title "Site ${{ steps.version.outputs.version }}" \
+            --generate-notes
+
+      # ─────────────────────────────────────────────
+      # Deploy to Cloudflare Workers
+      # ─────────────────────────────────────────────
+
+      - name: Deploy to Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

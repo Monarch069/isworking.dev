@@ -1,0 +1,566 @@
+:root {
+  --rosewater: #f2d5cf;
+  --flamingo: #eebebe;
+  --pink: #f4b8e4;
+  --mauve: #ca9ee6;
+  --red: #e78284;
+  --maroon: #ea999c;
+  --peach: #ef9f76;
+  --yellow: #e5c890;
+  --green: #a6d189;
+  --teal: #81c8be;
+  --sky: #99d1db;
+  --sapphire: #85c1dc;
+  --blue: #8caaee;
+  --lavender: #babbf1;
+
+  --text: #c6d0f5;
+  --subtext-1: #b5bfe2;
+  --subtext-0: #a5adce;
+
+  --overlay-2: #949cbb;
+  --overlay-1: #838ba7;
+  --overlay-0: #737994;
+
+  --surface-2: #626880;
+  --surface-1: #51576d;
+  --surface-0: #414559;
+
+  --base: #303446;
+  --mantle: #292c3c;
+  --crust: #232634;
+
+  --radius: 6px;
+  --content-width: 850px;
+}
+
+/* ─────────────────────────────────────────────
+   Base
+   ───────────────────────────────────────────── */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 48px 24px;
+  background: var(--base);
+  color: var(--text);
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-size: 15px;
+  line-height: 1.75;
+  text-rendering: optimizeLegibility;
+}
+
+main {
+  width: min(100%, var(--content-width));
+  margin: 0 auto;
+}
+
+::selection {
+  color: var(--base);
+  background: var(--lavender);
+}
+
+/* ─────────────────────────────────────────────
+   Headings
+   ───────────────────────────────────────────── */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  position: relative;
+  margin: 2.5rem 0 1rem;
+
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+h4 {
+  font-size: 1.1rem;
+}
+
+h5,
+h6 {
+  font-size: 1rem;
+}
+
+/* The terminal-ish "#" prefixes */
+
+h1::before,
+h2::before,
+h3::before,
+h4::before,
+h5::before,
+h6::before {
+  color: var(--overlay-1);
+  font-weight: 400;
+  letter-spacing: -0.08em;
+  margin-right: 0.55em;
+  opacity: 0.65;
+}
+
+h1::before { content: "#"; }
+h2::before { content: "##"; }
+h3::before { content: "###"; }
+h4::before { content: "####"; }
+h5::before { content: "#####"; }
+h6::before { content: "######"; }
+
+/* ─────────────────────────────────────────────
+   Text
+   ───────────────────────────────────────────── */
+
+p {
+  margin: 0 0 1.25rem;
+}
+
+strong,
+b {
+  color: var(--rosewater);
+  font-weight: 700;
+}
+
+em,
+i {
+  color: var(--pink);
+}
+
+del,
+s {
+  color: var(--overlay-1);
+}
+
+small {
+  color: var(--subtext-0);
+  font-size: 0.85em;
+}
+
+mark {
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  color: var(--base);
+  background: var(--yellow);
+}
+
+hr {
+  height: 1px;
+  margin: 2.5rem 0;
+  border: 0;
+  background: var(--surface-1);
+}
+
+blockquote {
+  margin: 1.5rem 0;
+  padding: 0.5rem 1.25rem;
+
+  color: var(--subtext-1);
+  border-left: 2px solid var(--mauve);
+  background: var(--mantle);
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* ─────────────────────────────────────────────
+   Links
+   ───────────────────────────────────────────── */
+
+a {
+  position: relative;
+
+  color: var(--blue);
+  text-decoration: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--mauve),
+      var(--blue),
+      var(--sapphire)
+    )
+    0 100% / 0% 1px
+    no-repeat;
+
+  border-bottom: 1px solid color-mix(
+    in srgb,
+    var(--blue) 30%,
+    transparent
+  );
+
+  transition:
+    color 180ms ease,
+    background-size 300ms cubic-bezier(.22, 1, .36, 1),
+    border-color 180ms ease,
+    text-shadow 180ms ease;
+}
+
+a:hover {
+  color: var(--lavender);
+
+  background-size: 100% 1px;
+
+  border-bottom-color: transparent;
+
+  text-shadow:
+    0 0 10px color-mix(
+      in srgb,
+      var(--blue) 25%,
+      transparent
+    );
+}
+
+/* A tiny terminal-ish arrow appears on hover */
+
+a::after {
+  content: " ↗";
+
+  display: inline-block;
+
+  color: var(--overlay-1);
+  opacity: 0;
+
+  transform: translate(-3px, 2px);
+
+  transition:
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(.22, 1, .36, 1),
+    color 180ms ease;
+}
+
+a:hover::after {
+  color: var(--sapphire);
+  opacity: 1;
+  transform: translate(2px, 0);
+}
+
+/* Keyboard navigation */
+
+a:focus-visible {
+  color: var(--lavender);
+
+  outline: none;
+
+  border-bottom-color: var(--lavender);
+
+  text-shadow:
+    0 0 10px color-mix(
+      in srgb,
+      var(--lavender) 25%,
+      transparent
+    );
+}
+
+/* Keep images from inheriting link styling */
+
+a:has(img) {
+  display: inline-block;
+
+  border-bottom: 0;
+  background: none;
+}
+
+a:has(img)::after {
+  display: none;
+}
+
+a:has(img):hover {
+  background: none;
+  text-shadow: none;
+}
+
+/* ─────────────────────────────────────────────
+   Lists
+   ───────────────────────────────────────────── */
+
+ul,
+ol {
+  margin: 1rem 0 1.5rem;
+  padding-left: 1.8rem;
+}
+
+li {
+  padding-left: 0.25rem;
+  margin: 0.3rem 0;
+}
+
+li::marker {
+  color: var(--mauve);
+}
+
+ul li::marker {
+  content: "›  ";
+}
+
+ol li::marker {
+  color: var(--overlay-1);
+  font-weight: 600;
+}
+
+li > ul,
+li > ol {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+/* ─────────────────────────────────────────────
+   Inline code
+   ───────────────────────────────────────────── */
+
+code {
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+
+  color: var(--peach);
+  background: var(--mantle);
+
+  font-family: inherit;
+  font-size: 0.9em;
+}
+
+/* ─────────────────────────────────────────────
+   Code blocks
+   ───────────────────────────────────────────── */
+
+pre {
+  position: relative;
+
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.4rem;
+
+  overflow-x: auto;
+
+  border: 1px solid var(--surface-0);
+  border-radius: var(--radius);
+
+  color: var(--subtext-1);
+  background: var(--crust);
+
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.65;
+
+  box-shadow:
+    0 1px 0 var(--surface-1),
+    0 8px 30px rgb(0 0 0 / 12%);
+}
+
+pre::before {
+  content: "$";
+  display: block;
+
+  margin-bottom: 0.7rem;
+
+  color: var(--green);
+  opacity: 0.65;
+}
+
+pre code {
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  font-size: inherit;
+}
+
+pre::-webkit-scrollbar {
+  height: 7px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: var(--mantle);
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: var(--surface-1);
+  border-radius: 10px;
+}
+
+/* ─────────────────────────────────────────────
+   Tables
+   ───────────────────────────────────────────── */
+
+table {
+  width: 100%;
+  margin: 1.5rem 0;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  overflow: hidden;
+
+  border: 1px solid var(--surface-0);
+  border-radius: var(--radius);
+
+  background: var(--mantle);
+}
+
+thead {
+  color: var(--text);
+  background: var(--surface-0);
+}
+
+th,
+td {
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid var(--surface-0);
+}
+
+th {
+  color: var(--lavender);
+  font-weight: 700;
+}
+
+td {
+  color: var(--subtext-1);
+}
+
+tbody tr {
+  transition: background-color 120ms ease;
+}
+
+tbody tr:hover {
+  background: rgb(255 255 255 / 2%);
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ─────────────────────────────────────────────
+   Images
+   ───────────────────────────────────────────── */
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+
+  margin: 1.5rem auto;
+
+  border: 1px solid var(--surface-1);
+  border-radius: var(--radius);
+
+  box-shadow:
+    0 1px 0 var(--surface-2),
+    0 12px 35px rgb(0 0 0 / 18%);
+}
+
+figure {
+  margin: 1.5rem 0;
+}
+
+figure img {
+  margin-bottom: 0.5rem;
+}
+
+figcaption {
+  color: var(--overlay-1);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ─────────────────────────────────────────────
+   Details / summary
+   ───────────────────────────────────────────── */
+
+details {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+
+  border: 1px solid var(--surface-0);
+  border-radius: var(--radius);
+
+  background: var(--mantle);
+}
+
+summary {
+  cursor: pointer;
+  color: var(--blue);
+}
+
+summary:hover {
+  color: var(--sapphire);
+}
+
+/* ─────────────────────────────────────────────
+   Keyboard / terminal-ish elements
+   ───────────────────────────────────────────── */
+
+kbd {
+  padding: 0.15em 0.45em;
+
+  color: var(--text);
+  background: var(--surface-0);
+
+  border: 1px solid var(--surface-1);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+
+  font: inherit;
+  font-size: 0.85em;
+}
+
+/* ─────────────────────────────────────────────
+   Responsive
+   ───────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  body {
+    padding: 28px 16px;
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+
+  h2 {
+    font-size: 1.35rem;
+  }
+
+  pre {
+    margin-left: -8px;
+    margin-right: -8px;
+    border-radius: 4px;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

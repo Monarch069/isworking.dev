@@ -1,0 +1,14 @@
+{
+  "$schema": "https://unpkg.com/wrangler@latest/config-schema.json",
+
+  "name": "isworking",
+  "main": "./worker.js",
+
+  "compatibility_date": "2026-08-23",
+
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  }
+}
