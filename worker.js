@@ -3,18 +3,13 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // 1. Try the requested path exactly as-is.
-    //    This handles things like:
-    //    /keys/ssh
-    //    /robots.txt
-    //    /assets/style.css
-    const exact = await env.ASSETS.fetch(request);
+    if (path !== "/") {
+      const exact = await env.ASSETS.fetch(request);
 
-    if (exact.status !== 404) {
-      return exact;
+      if (exact.status !== 404)
+        return exact;
     }
 
-    // 2. It doesn't exist literally, so negotiate a generated document.
     const accept = request.headers.get("Accept") ?? "";
 
     let extension = ".txt";
