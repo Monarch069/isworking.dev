@@ -30,8 +30,20 @@ export default {
         : `${path}${extension}`;
 
     const response = await env.ASSETS.fetch(
-      new Request(assetUrl, request)
+      `https://assets.local${assetPath}`
     );
+
+    if (!response.ok) {
+      return new Response(
+        `Asset not found: ${assetPath}\nStatus: ${response.status}`,
+        {
+          status: response.status,
+          headers: {
+            "Content-Type": "text/plain; charset=utf-8"
+          }
+        }
+      );
+    }
 
     const headers = new Headers(response.headers);
     headers.set("Vary", "Accept");
