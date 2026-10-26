@@ -1,3 +1,6 @@
 dist = "dist"
 templates = "templates"
 skeleton = "skeleton.html"
+
+# Enables sitemap.xml.
+base_url = "https://isworking.dev"

@@ -45,7 +45,10 @@ jobs:
 
       - name: Generate site
         run: |
-          ./builder/build/ssg .
+          # Reproducible: build_date comes from the last commit.
+          SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)" ./builder/build/ssg --check-links .
+          # Keep ssg's ownership marker off the site (Wrangler's ignore file; note the spelling).
+          echo .ssg-dist > dist/.assetsignore
 
       - name: Verify dist
         run: |
