@@ -32,6 +32,8 @@ In fact, even this site is written entirely in Markdown, and I didn't touch a bi
 - GPG: [here](keys/gpg)
 - SSH: [here](keys/ssh)
 
+Logo: [here](logo/)
+
 GitHub: [isworking](https://github.com/isworking)
 
 Feel free to reach out or connect with me through any of the above channels.

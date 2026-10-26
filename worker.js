@@ -29,6 +29,12 @@ export default {
 
     let response;
 
+    if (path === "/404" || path === "/404/") {
+      // The 404 page itself is still a 404.
+      response = await fetchAsset(`/404/index${extension}`);
+      return withStatus(response, 404);
+    }
+
     if (path.endsWith("/")) {
       // ssg publishes foo.md and foo/index.md as foo/index.{html,md,txt}.
       response = await fetchAsset(`${path}index${extension}`);
@@ -47,13 +53,23 @@ export default {
       }
     }
 
-    const headers = new Headers(response.headers);
-    headers.set("Vary", "Accept");
+    if (response.status === 404) {
+      // Anything missing gets 404.md, in whichever format was asked for.
+      response = await fetchAsset(`/404/index${extension}`);
+      return withStatus(response, 404);
+    }
 
-    return new Response(response.body, {
-      status: response.status,
-      statusText: response.statusText,
-      headers
-    });
+    return withStatus(response, response.status);
   }
 };
+
+function withStatus(response, status) {
+  const headers = new Headers(response.headers);
+  headers.set("Vary", "Accept");
+
+  return new Response(response.body, {
+    status,
+    statusText: status === response.status ? response.statusText : "Not Found",
+    headers
+  });
+}

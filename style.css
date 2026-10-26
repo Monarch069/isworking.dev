@@ -535,6 +535,198 @@ kbd {
 }
 
 /* ─────────────────────────────────────────────
+   Page entrance and the blinking cursor
+   ───────────────────────────────────────────── */
+
+main {
+  animation: rise 420ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+h1::after {
+  content: "";
+
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 0.3em;
+
+  vertical-align: -0.15em;
+
+  background: var(--mauve);
+  opacity: 0.8;
+
+  animation: blink 1.1s steps(1) infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Internal links point onwards, not outwards */
+
+a:not([href*="://"])::after {
+  content: " →";
+}
+
+/* ─────────────────────────────────────────────
+   Alerts (> [!NOTE]) and containers (::: name)
+   ───────────────────────────────────────────── */
+
+.alert {
+  --c: var(--overlay-1);
+
+  margin: 1.5rem 0;
+  padding: 0.75rem 1.25rem;
+
+  border-left: 2px solid var(--c);
+  border-radius: 0 var(--radius) var(--radius) 0;
+
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--c) 10%, var(--mantle)),
+    var(--mantle) 60%
+  );
+}
+
+.alert.note      { --c: var(--blue); }
+.alert.tip       { --c: var(--green); }
+.alert.important { --c: var(--mauve); }
+.alert.warning   { --c: var(--yellow); }
+.alert.caution   { --c: var(--red); }
+
+.alert > :first-child { margin-top: 0; }
+.alert > :last-child  { margin-bottom: 0; }
+
+.alert-title {
+  color: var(--c);
+  font-weight: 700;
+}
+
+.alert-title::before {
+  content: "[!] ";
+  opacity: 0.6;
+}
+
+/* 404: a big, slightly unstable "404" over the transcript */
+
+.alert.lost {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.alert.lost::before {
+  content: "404";
+
+  display: block;
+
+  font-size: clamp(4.5rem, 18vw, 8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+
+  color: transparent;
+  background: linear-gradient(90deg, var(--mauve), var(--blue), var(--sapphire));
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  text-shadow:
+    -2px 0 color-mix(in srgb, var(--red) 35%, transparent),
+    2px 0 color-mix(in srgb, var(--teal) 35%, transparent);
+
+  animation: glitch 4s infinite;
+}
+
+.alert.lost pre::before {
+  color: var(--red);
+}
+
+@keyframes glitch {
+  0%, 92%, 100% { transform: none; }
+  93% { transform: translate(-2px, 1px) skewX(-6deg); }
+  95% { transform: translate(2px, -1px) skewX(4deg); }
+  97% { transform: translate(-1px, 0); }
+}
+
+/* ─────────────────────────────────────────────
+   Footnotes, task lists, definition lists
+   ───────────────────────────────────────────── */
+
+.footnote-ref a {
+  border-bottom: 0;
+}
+
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after  { content: "]"; opacity: 1; transform: none; color: inherit; }
+
+.footnotes {
+  margin-top: 3rem;
+  padding-top: 1rem;
+
+  border-top: 1px solid var(--surface-1);
+
+  color: var(--subtext-0);
+  font-size: 0.9em;
+}
+
+:target {
+  scroll-margin-top: 1rem;
+}
+
+.footnotes li:target {
+  background: color-mix(in srgb, var(--blue) 10%, transparent);
+}
+
+.contains-task-list {
+  padding-left: 1.2rem;
+}
+
+.task-list-item {
+  list-style: none;
+}
+
+.task-list-item > input {
+  margin: 0 0.6em 0 -1.2em;
+  vertical-align: middle;
+  accent-color: var(--green);
+}
+
+dt {
+  color: var(--lavender);
+  font-weight: 700;
+}
+
+dd {
+  margin: 0 0 0.75rem 1.5rem;
+  color: var(--subtext-1);
+}
+
+th[align="center"], td[align="center"] { text-align: center; }
+th[align="right"],  td[align="right"]  { text-align: right; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ─────────────────────────────────────────────
    Responsive
    ───────────────────────────────────────────── */
 
