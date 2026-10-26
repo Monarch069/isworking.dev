@@ -1,0 +1,5 @@
+# Deployment config, not site content.
+worker.js
+wrangler.jsonc
+# CI checks the builder out here (ssg also skips nested git checkouts on its own).
+builder/
