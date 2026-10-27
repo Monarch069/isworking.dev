@@ -28,6 +28,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: isworking/ssg
+          ref: v1.0.1
           path: builder
 
       # ─────────────────────────────────────────────
@@ -36,7 +37,7 @@ jobs:
 
       - name: Build ssg
         run: |
-          cmake -S builder -B builder/build -DCMAKE_BUILD_TYPE=Release
+          cmake -S builder -B builder/build -DCMAKE_BUILD_TYPE=Release -DSSG_VERSION_SUFFIX=
           cmake --build builder/build --config Release
 
       # ─────────────────────────────────────────────
@@ -46,9 +47,8 @@ jobs:
       - name: Generate site
         run: |
           # Reproducible: build_date comes from the last commit.
+          # site.toml's [deploy] target also writes dist/_headers and dist/.assetsignore.
           SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)" ./builder/build/ssg --check-links .
-          # Keep ssg's ownership marker off the site (Wrangler's ignore file; note the spelling).
-          echo .ssg-dist > dist/.assetsignore
 
       - name: Verify dist
         run: |

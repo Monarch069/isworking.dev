@@ -4,3 +4,13 @@ skeleton = "skeleton.html"
 
 # Enables sitemap.xml.
 base_url = "https://isworking.dev"
+
+# The manifest is only read by tooling; nothing here uses it.
+manifest = false
+
+[deploy]
+# Writes worker.js (if missing), _headers and .assetsignore. wrangler.jsonc is ours.
+target = "cloudflare"
+
+[css]
+minify = true
